@@ -1,0 +1,96 @@
+
+  .formSelector {
+    align-items: center;
+    justify-items: center;
+    font-size: large;
+    display: flex;
+    flex-direction: row;
+    margin-left: 50px;
+  }
+  
+  .loginActive {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 35% 0 0 35%;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .loginInactive {
+    background-color: #490000;
+    color: white;
+    padding: 10px;
+    border-radius: 35% 0 0 35%;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .registerActive {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 0 35px 35px 0;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .registerInactive {
+    background-color: #490000;
+    color: white;
+    padding: 10px;
+    border-radius: 0 35px 35px 0;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .login {
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
+    width: 250px;
+  }
+
+  .loginTitle {
+    margin-left: 80px;
+    margin-bottom: 25px;
+    font-weight: bold;
+  }
+
+  .formButton {
+    margin-top: 25px;
+    border-radius: 8px;
+    background-color: #490000;
+    cursor: pointer;
+  }
+
+  .formLabel {
+    font-size: 18px;
+  }
+
+  .login input {
+    width: 250px;
+  }
+
+  .eye {
+    position: absolute;
+    transform: translate(-120%);
+    cursor: pointer;
+  }
+  
+  .register {
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
+    width: 250px;
+  }
+
+  .registerTitle {
+    margin-left: 80px;
+    margin-bottom: 25px;
+    font-weight: bold;
+  }
+
+  .register input {
+    width: 250px;
+  }
