@@ -5,8 +5,21 @@ import bcrypt from "bcrypt";
 //Depuis next.js 13 les routes d'API doivent exporter des fonction nommées avec la methode HTTP( ici POST ) et pas de default pour ces fonctions 
 export async function POST(req, res) {
     const { email, password } = await req.json() // `req.json()` doit être utilisé pour lire le corps dans la nouvelle API
-    console.log("DB_USER",process.env.DB_USER);
+    
     try {
+        //vérification de l'existance d'un utilisateur avec la meme adresse email
+        const [existingUser] = await pool.query(
+            'SELECT * FROM users where email = ?',
+            [email]
+        );
+
+        if (existingUser.length > 0) {
+            return new Response(
+                JSON.stringify({ message: "L'email est déja utilisé"}),
+                { status: 409 }
+            );
+        }
+
         //hashage du mot de passe
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
