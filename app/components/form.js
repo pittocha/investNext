@@ -28,18 +28,30 @@ export default function Home() {
     const loginEmail = event.target.elements.login_email.value;
     const loginPassword = event.target.elements.login_password.value;
 
-    const result = await signIn("credentials", {
-      redirect: false,
-      email: loginEmail,
-      password: loginPassword,
-    });
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: loginEmail,
+          password: loginPassword,
+        }),
+      });
 
-    if (result?.error) {
-      //gérer l'erreur
-      setNotification({ error: true, message: "une erreur est survenue"});
-    } else {
-      //redirige l'utilisateur
-      router.push('/dashboard');
+      const data = await response.json();
+
+      if (response.ok) {
+        //connexion réussie et redirection
+        router.push('/dashboard');
+      } else {
+        //gestion de l'erreur de connexion
+        setNotification({ error: true, message: data.message });
+      }
+
+    } catch (err) {
+      setNotification({ error: true, message: "une erreur est survenue lors de la connxion"});
     }
   };
 

@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <hi>Bienvenue sur notre site</hi>
+        <h1>Bienvenue sur notre site</h1>
         <p>Découvré nos service, inscriver vous ou connecter vous.</p>
         
         <Form />
