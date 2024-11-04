@@ -10,6 +10,7 @@ export default function Home() {
   const [ status, setstatus ] = useState('Envoyer');
   const { data: session } = useSession();
   const router = useRouter();
+  const [notification, setNotification] = useState({ error: false, message: '' });
 
   /*fonction pour afficher/masquer le mot de passe */
   const handleToggleForm = (isLogin) => {
@@ -49,7 +50,7 @@ export default function Home() {
 
     try {
       //appel de l'API d'inscription
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,6 +88,9 @@ export default function Home() {
 
   return (
     <div>
+        <div>
+          {notification.message.length > 0 && <p>{notification.message}</p>}
+        </div>
         {/*selecteur de formulaire */}
         <div className={styles.formSelector}>
           <div className={showLogin ? styles.loginActive : styles.loginInactive} onClick={() => handleToggleForm(true)}>Login</div>

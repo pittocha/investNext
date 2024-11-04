@@ -11,7 +11,7 @@ export default NextAuth({
             },
             async authorize(credentials) {
                 //appel à l'apipour vérifier les information
-                const res = await fetch("../login/route", {
+                const res = await fetch("/login/route", {
                     method: 'POST',
                     headers: { 'Content-type': 'application/json' },
                     body: JSON.stringify({
