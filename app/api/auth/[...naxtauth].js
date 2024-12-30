@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/ptoviders/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { jwtVerify, SignJWT } from "jose";
 
 export default NextAuth({
     providers: [
@@ -7,30 +8,48 @@ export default NextAuth({
             name: 'credentials',
             credentials: {
                 email: { label: "email", type: "text"},
-                password: { labell: "password", type: "password"},
+                password: { label: "password", type: "password"},
             },
             async authorize(credentials) {
-                //appel à l'apipour vérifier les information
-                const res = await fetch("/login/route", {
+                //appel à l'api pour vérifier les information (lors du déploiement penser a ajouter ${process.env.NEXTAUTH_URL} dans l'adresse de l'api qui est fetch)
+                const res = await fetch("/api/login", {
                     method: 'POST',
                     headers: { 'Content-type': 'application/json' },
                     body: JSON.stringify({
-                        email: credentials.email,
-                        password: credentials.password,
+                        email: credentials?.email,
+                        password: credentials?.password,
                     }),
                 });
+
+                if (!res.ok) {
+                    throw new Error("Authentification failed");
+                }
 
                 const user = await res.json();
 
                 //si l'authentification est réussi
-                if (res.ok && user) {
+                if (user) {
                     return user;
-                } else {
-                    return null;
                 }
+
+                return null;
             }
         })
     ],
+
+    jwt: {
+        encode: async ({ secret, token }) => {
+            return new SignJWT(token)
+            .setProtectedHeader({ alg: "HS256" })
+            .setExpirationTime("24h")
+            .sign(new TextEncoder().encode(secret));
+        },
+        decode: async ({ secret, token }) => {
+            const { payload } = await jwtVerify(token || "", new TextEncoder(),encode(secret));
+            return payload;
+        }
+    },
+
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
@@ -39,12 +58,11 @@ export default NextAuth({
             return token;
         },
         async session ({ session, token }) {
-            session.user.id = token.id;
+            if (token?.id) {
+                session.user.id = token.id;
+            }
             return session;
         }
-    },
-    session: {
-        jwt: true,
     },
     secret: process.env.NEXTAUTH_SECRET,
 });
