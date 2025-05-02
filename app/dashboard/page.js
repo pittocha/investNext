@@ -1,5 +1,4 @@
 import styles from "../styles/dashboard.module.css";
-import { signOut } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import { authOption } from "../api/auth/[...naxtauth]"
 import DashboardClient from "./dashboardClient";
